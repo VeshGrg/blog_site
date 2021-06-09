@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class PostReviewController extends Controller
 {
-    public function index(PostReview $review)
+    public function index(PostReview $postReview)
     {
-        $review->get();
+        $postReview = PostReview::get();
         return view('admin.review.index')
-            ->with('reviews', $review);
+            ->with('reviews', $postReview);
     }
 
     public function edit(Article $article, PostReview $postReview)
@@ -29,7 +29,6 @@ class PostReviewController extends Controller
 
     public function update(Request $request, PostReview $postReview)
     {
-        //dd($request);
         $this->authorize('update', $postReview);
 
         // Update the post...
@@ -41,16 +40,11 @@ class PostReviewController extends Controller
 
     }
 
-    public function destroy($id)
+    public function destroy(PostReview $postReview)
     {
-        $review = PostReview::findOrFail($id);
-
-        $del = $review->delete();
-        if($del){
-            request()->session()->flash('success', 'Review deleted successfully.');
-        }else{
-            \request()->session()->flash('error', 'Sorry, there was error while deleting review.');
-        }
-        return redirect()->route('list-review');
+        $review = PostReview::findOrFail($postReview->id);
+        $review->delete();
+        return redirect()->route('list-review')
+            ->withSuccess('Review deleted successfully.');
     }
 }
