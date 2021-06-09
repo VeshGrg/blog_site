@@ -7,13 +7,13 @@ use App\Models\PostReview;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Gallery;
+use Illuminate\Support\Facades\Gate;
 
 class GalleryController extends Controller
 {
-    protected $gallery = null;
+
     public function __construct()
     {
-        //$this->gallery = $gallery;
     }
 
     /**
@@ -89,7 +89,6 @@ class GalleryController extends Controller
 
     public function update(Request $request, Gallery $gallery)
     {
-        $this->authorize('update', $gallery);
         $gallery = Gallery::findOrFail($gallery->id);
         $rules = $gallery->validateGallery();
         $request->validate($rules);
@@ -108,6 +107,7 @@ class GalleryController extends Controller
      */
     public function destroy(Gallery $gallery)
     {
+        Gate::authorize('delete', $gallery);
         $gallery = Gallery::findOrFail($gallery->id);
         $gallery->delete();
         return redirect()->route('list-gallery')
