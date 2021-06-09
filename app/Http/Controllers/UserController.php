@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ActivateUser;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserInfo;
@@ -92,9 +93,14 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $user = User::findOrFail($user->id);
-        return view('admin.user.form')
-            ->with('user_detail', $user);
+        if (Gate::forUser($user)->allows('update', $user)) {
+            // The user can update the post...
+            $user = User::findOrFail($user->id);
+            return view('admin.user.form')
+                ->with('user_detail', $user);
+        }
+        abort(403);
+
     }
 
     /**
@@ -142,9 +148,14 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect()->route('user.index')
-            ->withSuccess('User deleted successfully');
+        if (Gate::forUser($user)->allows('delete', $user)) {
+            // The user can update the post...
+            $user->delete();
+            return redirect()->route('user.index')
+                ->withSuccess('User deleted successfully');
+        }
+        abort(403);
+
     }
 
     public function activateUser($token, User $user)
