@@ -28,4 +28,11 @@ class PostReviewPolicy
             ? Response::allow()
             : Response::deny('You do not own this post.');
     }
+
+    public function delete(User $user, PostReview $postReview)
+    {
+        return $user->role === 'admin'
+            ? Response::allow()
+            : Response::deny('You must be an Administrator.');
+    }
 }

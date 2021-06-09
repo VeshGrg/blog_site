@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\PostReview;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostReviewController extends Controller
 {
@@ -42,6 +43,7 @@ class PostReviewController extends Controller
 
     public function destroy(PostReview $postReview)
     {
+        Gate::authorize('delete', $postReview);
         $review = PostReview::findOrFail($postReview->id);
         $review->delete();
         return redirect()->route('list-review')

@@ -7,6 +7,7 @@
     <list default="true" id="226be212-69ce-4036-ac96-8881143d4eed" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/PostReviewController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/PostReviewController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Policies/PostReviewPolicy.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Policies/PostReviewPolicy.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -251,7 +252,7 @@
       <workItem from="1622978926865" duration="3258000" />
       <workItem from="1623034800006" duration="3736000" />
       <workItem from="1623066688997" duration="784000" />
-      <workItem from="1623222802119" duration="6809000" />
+      <workItem from="1623222802119" duration="7475000" />
     </task>
     <servers />
   </component>
