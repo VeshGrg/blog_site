@@ -25,7 +25,7 @@
                             <div class="inner">
                                 <h3>0</h3>
 
-                                <p>New Blogs</p>
+                                <p>Gallery</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-bag"></i>
@@ -38,9 +38,9 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>0<sup style="font-size: 20px">%</sup></h3>
+                                <h3>0</h3>
 
-                                <p>Gallery</p>
+                                <p>Articles</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-stats-bars"></i>
@@ -55,7 +55,7 @@
                             <div class="inner">
                                 <h3>0</h3>
 
-                                <p>Videos</p>
+                                <p>Users</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-person-add"></i>
@@ -70,7 +70,7 @@
                             <div class="inner">
                                 <h3>0</h3>
 
-                                <p>Bloggers List</p>
+                                <p>Review</p>
                             </div>
                             <div class="icon">
                                 <i class="ion ion-pie-graph"></i>

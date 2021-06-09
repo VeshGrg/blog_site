@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
 use App\Models\UserInfo;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -85,6 +86,7 @@ class UserController extends Controller
         $this->user = $this->user->where('role', $type)->get();
         return view('admin.user.index')
             ->with('all_users', $this->user);
+
     }
 
     /**

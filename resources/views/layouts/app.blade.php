@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script> window.Laravel = @json($userData); </script>
 </head>
 <body>
     <div id="app">

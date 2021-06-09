@@ -2,105 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BloggerArticle;
+use App\Models\Gallery;
 use App\Models\UserInfo;
 use App\Models\User;
 use App\Models\Article;
 use App\Models\PostReview;
-use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Gate;
-use Carbon;
-
 
 class FrontendController extends Controller
 {
     protected $user = null;
     protected $review = null;
-    protected $comment = null;
-    public function __construct(User $user,Article $article, PostReview $review, Comment $comment)
+
+    public function __construct(User $user, PostReview $review)
     {
         $this->user = $user;
-        $this->article = $article;
         $this->review = $review;
-        $this->comment = $comment;
     }
 
-    public function home()
+    public function home(Article $article)
     {
-        $this->article = $this->article->orderBy('id', 'DESC')->limit(6)->get();
+        $article = $article->orderBy('id', 'DESC')->limit(8)->get();
+
+        $all_articles = \App\Models\Article::inRandomOrder()->limit(8)->get();
         return view('front.index')
-            ->with('article_detail', $this->article);
+            ->with('article_detail', $article)
+            ->with('articles', $all_articles);
     }
 
-    public function blogDetail(Request $request)
+    public function allArticle(Article $article)
     {
-        $this->article = $this->article->firstOrFail();
-        $count = 0;
-        if($request->user()){
-            $count = $this->review->where('article_id', $this->article->id)->where('user_id', $request->user()->id)->count();
-        }
+        $articles = $article->orderBy('id', 'DESC')->get();
+        return view('front.all-articles')
+            ->with('all_articles', $articles);
+    }
+
+    public function article(Request $request,Article $article)
+    {
+        //$this->article = $this->article->firstOrFail();
+        $gallery = Gallery::firstOrFail();
         return view('front.blog-detail')
-            ->with('reviewd', $count)
-            ->with('all_article', $this->article);
+            ->with('article', $article)
+            ->with('gallery', $gallery);
     }
 
-    public function postReview(Request $request)
+    public function postReview(Request $request, Article $article)
     {
-        if($request->ajax()){
-            $comment = new PostReview();
-            $comment->fd = $request->input( 'review' );
-            $comment->type = "text";
-            $comment->save();
+        if($request->ajax()) {
+
+            $data = array(
+                'review' => $request->review,
+                'article_id' => $article->id,
+                'user_id' => $request->user()->id
+            );
+            $this->review->fill($data);
+            $this->review->save();
+
             $response = array(
                 'status' => 'success',
-                'msg' => 'Setting created successfully',
+                'msg' => 'Review added successfully',
+                'data' => view('front.partials.review', ['article' => $article, 'review' => $this->review])->render()
             );
-            return Response::json($response);
-            return 'yes';
-        }else{
-            return 'no';
-        }
-//        $this->article = $this->article->firstOrFail();
-//        $request->validate($this->review->validateReview());
-//        $data = array(
-//            'article_id' => $this->article->id,
-//            'user_id' => $request->user()->id,
-//            'review' => $request->review
-//        );
-//        $this->review->fill($data);
-//        $status = $this->review->save();
-//        if($status){
-//            $request->session()->flash('success', 'Review added successfully.');
-//        }else{
-//            $request->session()->flash('error', 'Sorry, there was error while adding review.');
-//        }
-
-        return redirect()->route('page-detail');
-    }
-
-    public function editReview($id)
-    {
-        $this->validateId($id);
-        return view('front.blog-detail')
-            ->with('review_data', $this->review);
-    }
-
-    public function gate()
-    {
-        $post = PostReview::find(1);
-
-        if (Gate::allows('update-post', $post)) {
-            echo 'Allowed';
-        } else {
-            echo 'Not Allowed';
+            return response()->json($response);
         }
 
-        exit;
+        return redirect()->route('article-detail');
     }
 
     public function updateReview(Request $request, $id)
     {
-        //$this->authorize('update');
         // Update the post...
         $this->validateId($id);
         $request->validate($this->review->validateReview());
@@ -108,22 +81,17 @@ class FrontendController extends Controller
         $this->review->fill($data);
         $status = $this->review->save();
         if($status){
-//            $data['user_id'] = $this->user->id;
-//            if($this->user->userInfo == null){
-//                $this->user->userInfo = new UserInfo();
-//            }
-//            $this->user->userInfo->fill($data);
-//            $this->user->userInfo->save();
             $request->session()->flash('success', 'Review uploaded successfully.');
         }else{
             $request->session()->flash('error', 'Sorry, review could not be uploaded.');
         }
-        return redirect()->route('page-detail');
+        return redirect()->route('article-detail');
     }
 
     public function validateId($id)
     {
         $this->review = $this->review->find($id);
+
         if(!$this->review){
             \request()->session()->flash('error', 'Sorry, no id found.');
             return redirect()->back();

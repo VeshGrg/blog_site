@@ -6,7 +6,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Comment;
 
 class User extends Authenticatable
 {
@@ -77,8 +76,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function comments()
+    public function receivesBroadcastNotificationsOn()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return "users.{$this->id}";
     }
+
 }

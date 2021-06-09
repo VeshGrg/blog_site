@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Comment;
 
 class Gallery extends Model
 {
@@ -21,13 +20,13 @@ class Gallery extends Model
         return $rules;
     }
 
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, 'commentable');
-    }
-
     public function createdBy()
     {
         return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
+
+    public function comment()
+    {
+        return $this->morphOne(Comment::class, 'commentable');
     }
 }

@@ -26,9 +26,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//        Relation::morphMap([
-//            Post::class => 'post',
-//            Video::class => 'video',
-//        ]);
+        view()->composer(['layouts.app'], function ($view){
+            $view->with('userData', [
+                'authenticated' => auth()->check(),
+                'user_id' => auth()->id(),
+            ]);
+        });
     }
 }

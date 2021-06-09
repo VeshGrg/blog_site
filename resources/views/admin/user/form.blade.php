@@ -130,11 +130,11 @@
                                         <input type="file" class="form-control form-control-sm" name="image" accept="image/*">
                                     </div>
                                     <div class="col-md-2">
-                                            @if(@$user_detail->userInfo != null && @$user_detail->userInfo->image != null && file_exists(public_path().'/upload/user/'.$user_detail->userInfo->image) )
-                                                <img src="{{ asset('upload/user/'.$user_detail->userInfo->image) }}" alt="">
-                                            @else
-                                                <img src="{{ asset('images/dummy.png') }}" class="img img-circle" style="width: 40px" alt="">
-                                            @endif
+                                       @if(@$user_detail->userInfo != null && file_exists(public_path().'/upload/user/'.@$user_detail->userInfo->image) )
+                                            <img src="{{ asset('upload/user/'.$user_detail->userInfo->image) }}"  width="60%" alt="">
+                                        @else
+                                            <img src="{{ asset('images/dummy.png') }}"  width="60%" alt="">
+                                        @endif
                                     </div>
                                 </div>
 

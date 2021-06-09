@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Gallery;
+use App\Models\Article;
+use App\Models\User;
+use App\Models\PostReview;
 
 class HomeController extends Controller
 {
@@ -43,11 +47,11 @@ class HomeController extends Controller
 
     public function blogger()
     {
-        return view('home');
+        return view('blogger.index');
     }
 
     public function reader()
     {
-        return view('home');
+        return view('reader.index');
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PostReview extends Model
+
 {
     use HasFactory;
     protected $fillable = ['article_id', 'user_id', 'review'];
@@ -26,4 +27,5 @@ class PostReview extends Model
     {
         return $this->hasOne('App\Models\Article', 'id', 'article_id');
     }
+
 }

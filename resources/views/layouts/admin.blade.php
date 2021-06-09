@@ -1,12 +1,12 @@
-@include('admin.partials.top-header')
+@include('partials.top-header')
 <div class="wrapper">
 
-    @include('admin.partials.header-menu')
+    @include('partials.header-menu')
     <!-- Content Wrapper. Contains page content -->
-    @include('admin.partials.sidebar')
-        @include('admin.partials.notify')
+    @include('partials.sidebar')
+        @include('partials.notify')
     @yield('content')
     <!-- /content-wrapper -->
-    @include('admin.partials.copyright')
+    @include('partials.copyright')
 </div>
-    @include('admin.partials.footer')
+    @include('partials.footer')

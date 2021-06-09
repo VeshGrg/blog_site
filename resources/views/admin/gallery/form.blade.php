@@ -45,7 +45,7 @@
                                     </div>
                                     @if(isset($gallery_detail))
                                         <div class="col-md-1">
-                                            <img src="{{ asset('upload/gallery/'.$gallery_detail->image) }}" alt="">
+                                            <img src="{{ asset('upload/gallery/'.$gallery_detail->image) }}" width="100%" alt="">
                                         </div>
                                     @endif
                                 </div>

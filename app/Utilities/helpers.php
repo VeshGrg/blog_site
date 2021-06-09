@@ -25,5 +25,13 @@
         if(!empty($image) && file_exists($path.'/'.$image) ){
             unlink($path.'/'.$image);
         }
+    }
 
+    function headerMenu(){
+        ?>
+            <li class="active"><a href="#">HOME</a></li>
+            <li><a href="#">Entertainment</a></li>
+            <li><a href="#">Sport</a></li>
+            <li><a href="#">IT</a></li>
+    <?php
     }

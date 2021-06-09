@@ -17,6 +17,11 @@ class CreateArticlesTable extends Migration
             $table->id();
             $table->string('title', 30);
             $table->string('name', 30);
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('CASCADE')
+                ->onUpdate('NO ACTION');
             $table->string('genre');
             $table->text('summary');
             $table->longText('description');

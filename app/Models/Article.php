@@ -10,7 +10,7 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'name', 'genre', 'summary', 'description', 'is_featured', 'image'];
+    protected $fillable = ['title', 'name', 'user_id', 'genre', 'summary', 'description', 'is_featured', 'image'];
 
     public function validateRules($act = 'add'){
         $rules = [
@@ -25,9 +25,14 @@ class Article extends Model
         return $rules;
     }
 
-    public function comments()
+    public function userInfo()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->hasOne('App\Models\User', 'id', 'user_id');
+    }
+
+    public function comment()
+    {
+        return $this->morphOne('App\Models\Comment', 'commentable');
     }
 
     public function reviews()
