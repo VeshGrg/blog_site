@@ -15,10 +15,11 @@
                         @method('patch')
 
                         @else
+                            {{ $errors }}
                     <form action="{{ route('submit') }}" method="POST" enctype="multipart/form-data">
                         @endif
                         @csrf
-                        {{ $errors }}
+
                         <div class="form-group row">
                             <label for="title" class="col-3">Title :</label>
                             <div class="col-9">
@@ -80,7 +81,7 @@
 
                         <div class="form-group row">
                             <div class="offset-3 col-3">
-                                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary" id="submit">Submit</button>
                                 <button type="reset" class="btn btn-danger">Reset</button>
                             </div>
                         </div>
