@@ -5,16 +5,13 @@ namespace App\Http\Controllers;
 use App\Jobs\ActivateUser;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Hash;
 use App\Models\UserInfo;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    protected $user = null;
-    public function __construct(User $user)
+    public function __construct()
     {
-        $this->user = $user;
     }
 
     /**
@@ -22,11 +19,11 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        $this->user = $this->user->where('role', '!=', 'admin')->get();
+        $user = User::where('role', '!=', 'admin')->get();
         return view('admin.user.index')
-            ->with('all_users', $this->user);
+            ->with('all_users', $user);
     }
 
     /**
@@ -45,9 +42,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
-        $rules = $this->user->addUserRules();
+        $rules = $user->addUserRules();
         $request->validate($rules);
         $image_name = uploadImage($request->image, 'user', '600x300');
         $data = $request->except('image', 'password', 'password_confirmation');
@@ -59,20 +56,18 @@ class UserController extends Controller
         $data['status'] = 'inactive';
         $random = \Str::random(100);
         $data['activation_token'] = $random;
-        $this->user->fill($data);
-        $status = $this->user->save();
+        $user->fill($data);
+        $status = $user->save();
         if($status){
-            $this->user->userInfo = new UserInfo();
+            $user->userInfo = new UserInfo();
             $data['user_id'] = $this->user->id;
-            $this->user->userInfo->fill($data);
-            $this->user->userInfo->save();
+            $user->userInfo->fill($data);
+            $user->userInfo->save();
 
             ActivateUser::dispatch($data);
-            $request->session()->flash('success', 'User created successfully.');
-        }else{
-            $request->session()->flash('error', 'Sorry, there was error while creating user.');
         }
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')
+            ->withSuccess('User added successfully');
     }
 
     /**
@@ -81,11 +76,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($type)
+    public function show($type, User $user)
     {
-        $this->user = $this->user->where('role', $type)->get();
+        $user = User::where('role', $type)->get();
         return view('admin.user.index')
-            ->with('all_users', $this->user);
+            ->with('all_users', $user);
 
     }
 
@@ -95,11 +90,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        $this->validateId($id);
+        $user = User::findOrFail($user->id);
         return view('admin.user.form')
-            ->with('user_detail', $this->user);
+            ->with('user_detail', $user);
     }
 
     /**
@@ -109,36 +104,34 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        $this->validateId($id);
-        $rules = $this->user->validateUserRules();
+        $user = User::findOrFail($user->id);
+        $rules = $user->validateUserRules();
         $request->validate($rules);
         $data = $request->except('image', '_method', '_token');
         if($request->image){
             $image_name = uploadImage($request->image, "user", '600x300');
             if($image_name) {
                 $data['image'] = $image_name;
-                if ($this->user->userInfo != null) {
-                    deleteImage($this->user->userInfo->image, 'user');
+                if ($user->userInfo != null) {
+                    deleteImage($user->userInfo->image, 'user');
                 }
             }
         }
-        $this->user->fill($data);
-        $status = $this->user->save();
+        $user->fill($data);
+        $status = $user->save();
         if($status){
-            $data['user_id'] = $this->user->id;
-            if($this->user->userInfo == null){
-                $this->user->userInfo = new UserInfo();
+            $data['user_id'] = $user->id;
+            if($user->userInfo == null){
+                $user->userInfo = new UserInfo();
             }
-            $this->user->userInfo->fill($data);
-            $this->user->userInfo->save();
-            $request->session()->flash('success', 'User updated successfully.');
-        }else{
-            $request->session()->flash('error', 'Sorry, there was error while updating user.');
+            $user->userInfo->fill($data);
+            $user->userInfo->save();
         }
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')
+            ->withSuccess('User updated successfully.');
     }
 
     /**
@@ -147,44 +140,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $this->validateId($id);
-        $image = $this->user->userInfo ? $this->user->userInfo->image : null;
-
-        $del = $this->user->delete();
-        if($del){
-            if($image){
-                deleteImage($image, 'user');
-            }
-            \request()->session()->flash('success', 'User deleted successfully.');
-        }else{
-            \request()->session()->flash('error', 'Sorry, there was error while deleting user.');
-        }
-        return redirect()->route('user.index');
+        $user->delete();
+        return redirect()->route('user.index')
+            ->withSuccess('User deleted successfully');
     }
 
-    public function validateId($id)
+    public function activateUser($token, User $user)
     {
-        $this->user = $this->user->find($id);
-        if(!$this->user){
-            \request()->session()->flash('error', 'No user found.');
-            return redirect()->back();
-        }
-    }
-
-    public function activateUser($token)
-    {
-        dd($token);
-        $this->user = $this->user->where('activation_token', $token)->findOrFail();
-        $this->user->activation_token = null;
-        $this->user->status = 'active';
-        $status = $this->user->save();
-        if($status){
-            \request()->session()->flash('success', 'User activated successfully.Please login to continue.');
-        }else{
-            \request()->session()->flash('error', 'Sorry, there was error while activating user.');
-        }
-        return redirect()->route('login');
+        $user = User::where('activation_token', $token)->findOrFail();
+        $user->activation_token = null;
+        $user->status = 'active';
+        $user->save();
+        return redirect()->route('login')
+            ->withSuccess('User activated successfully');
     }
 }
