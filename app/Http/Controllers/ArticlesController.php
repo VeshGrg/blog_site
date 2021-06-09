@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PostReview;
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Article;
-use App\Models\Comment;
 
 class ArticlesController extends Controller
 {
@@ -19,9 +16,11 @@ class ArticlesController extends Controller
     {
     }
 
-    public function index()
+    public function index(Article $article)
     {
-        //
+        $article = Article:: get();
+        return view('admin.article')
+            ->with('all_data', $article);
     }
 
     /**
@@ -106,12 +105,5 @@ class ArticlesController extends Controller
         return redirect()->route('articles')
             ->withSuccess('Article destroyed successfully.');
 
-    }
-
-    public function article(Article $article)
-    {
-        $article = Article:: get();
-        return view('admin.article')
-            ->with('all_data', $article);
     }
 }

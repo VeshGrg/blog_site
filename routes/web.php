@@ -39,7 +39,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function(){
         Route::get('/review/{review}/edit', [\App\Http\Controllers\PostReviewController::class, 'edit'])->name('edit-review');
         Route::patch('/review/{review}', [\App\Http\Controllers\PostReviewController::class, 'update'])->name('review-update');
 
-        Route::get('/articles', [ArticlesController::class, 'article'])->name('articles');
+        Route::get('/articles', [ArticlesController::class, 'index'])->name('articles');
         Route::get('/articles/create', [ArticlesController::class, 'create'])->name('new-article');
         Route::post('/submit-article', [ArticlesController::class, 'store'])->name('submit');
         Route::delete('/articles/{article}/delete', [ArticlesController::class, 'destroy'])->name('delete-article');
