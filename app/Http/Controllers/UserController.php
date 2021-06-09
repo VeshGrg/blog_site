@@ -61,7 +61,7 @@ class UserController extends Controller
         $status = $user->save();
         if($status){
             $user->userInfo = new UserInfo();
-            $data['user_id'] = $this->user->id;
+            $data['user_id'] = $user->id;
             $user->userInfo->fill($data);
             $user->userInfo->save();
 
@@ -100,7 +100,6 @@ class UserController extends Controller
                 ->with('user_detail', $user);
         }
         abort(403);
-
     }
 
     /**
@@ -160,7 +159,7 @@ class UserController extends Controller
 
     public function activateUser($token, User $user)
     {
-        $user = User::where('activation_token', $token)->findOrFail();
+        $user = User::where('activation_token', $token)->findOrFail($user->id);
         $user->activation_token = null;
         $user->status = 'active';
         $user->save();

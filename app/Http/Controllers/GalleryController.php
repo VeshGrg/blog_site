@@ -11,9 +11,9 @@ use App\Models\Gallery;
 class GalleryController extends Controller
 {
     protected $gallery = null;
-    public function __construct(Gallery $gallery)
+    public function __construct()
     {
-        $this->gallery = $gallery;
+        //$this->gallery = $gallery;
     }
 
     /**
@@ -23,7 +23,7 @@ class GalleryController extends Controller
      */
     public function index(Gallery $gallery)
     {
-        $gallery = $gallery->get();
+        $gallery = Gallery::get();
         return view('admin.gallery.index')
             ->with('all_data', $gallery);
     }
@@ -83,23 +83,21 @@ class GalleryController extends Controller
     public function edit(Article $article, Gallery $gallery)
     {
         $this->authorize('update', $gallery);
-        //dd($article);
         return view('admin.gallery.form')
             ->with('gallery_detail',$gallery);
     }
 
     public function update(Request $request, Gallery $gallery)
     {
-        //dd($request);
         $this->authorize('update', $gallery);
-
-        // Update the post...
+        $gallery = Gallery::findOrFail($gallery->id);
         $rules = $gallery->validateGallery();
         $request->validate($rules);
         $data = $request->all();
         $gallery->fill($data);
         $gallery->save();
-        return redirect()->route('list-gallery');
+        return redirect()->route('list-gallery')
+            ->withSuccess('Gallery updated successfully.');
     }
 
     /**
@@ -108,28 +106,13 @@ class GalleryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Gallery $gallery)
     {
-        $this->validateId($id);
-        $del = $this->gallery->delete();
-        if($del) {
-            if (\request()->image) {
-                deleteImage(\request()->image, 'gallery');
-            }
-            \request()->session()->flash('success', 'Gallery deleted successfully.');
-        }else{
-            \request()->session()->flash('error', 'Sorry, there was error while deleting gallery.');
-        }
-        return redirect()->route('list-gallery');
+        $gallery = Gallery::findOrFail($gallery->id);
+        $gallery->delete();
+        return redirect()->route('list-gallery')
+            ->withSuccess('Gallery deleted successfully.');
 
     }
 
-    private function validateId($id)
-    {
-        $this->gallery = $this->gallery->find($id);
-        if(! $this->gallery){
-            \request()->session()->flash('error', 'Sorry, no gallery found.');
-            return redirect()->back();
-        }
-    }
 }
