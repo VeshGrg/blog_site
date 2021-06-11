@@ -31,7 +31,7 @@
                     </a>
                 </li>
                 <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link {{ Request::path() == 'article*' ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Articles/Blog
@@ -40,13 +40,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('articles') }}" class="nav-link">
+                            <a href="{{ route('articles') }}" class="nav-link {{ request()->is('articles') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List Articles</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('new-article') }}" class="nav-link">
+                            <a href="{{ route('new-article') }}" class="nav-link {{ request()->is('articles/create') ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add Article</p>
                             </a>
@@ -54,7 +54,7 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link {{ Request::path() == 'user*' ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             User
@@ -63,25 +63,25 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('user.index') }}" class="nav-link">
+                            <a href="{{ route('user.index') }}" class="nav-link {{ Request::path() == 'user' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List Users</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('user.show', 'blogger') }}" class="nav-link">
+                            <a href="{{ route('user.show', 'blogger') }}" class="nav-link {{ Request::path() == 'user/blogger' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List Bloggers</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('user.show', 'reader') }}" class="nav-link">
+                            <a href="{{ route('user.show', 'reader') }}" class="nav-link {{ Request::path() == 'user/reader' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List Readers</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('user.create') }}" class="nav-link">
+                            <a href="{{ route('user.create') }}" class="nav-link {{ Request::path() == 'user/create' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add User</p>
                             </a>
@@ -89,7 +89,7 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link {{ Request::path() == 'gallery*' ? 'active' : '' }}">
+                    <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Gallery
@@ -98,13 +98,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{ route('list-gallery') }}" class="nav-link">
+                            <a href="{{ route('list-gallery') }}" class="nav-link {{ Request::path() == 'galleries' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>List Gallery</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('create-gallery') }}" class="nav-link">
+                            <a href="{{ route('create-gallery') }}" class="nav-link {{ Request::path() == 'gallery/create' ? 'active' : '' }}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add Gallery</p>
                             </a>
@@ -112,7 +112,7 @@
                     </ul>
                 </li>
                 <li class="nav-item has-treeview menu-open">
-                    <a href="{{ route('list-review') }}" class="nav-link {{ Request::path() == 'reviews*' ? 'active' : '' }}">
+                    <a href="{{ route('list-review') }}" class="nav-link {{ Request::path() == 'reviews' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             PostReview

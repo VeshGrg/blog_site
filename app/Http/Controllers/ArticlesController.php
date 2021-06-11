@@ -41,7 +41,7 @@ class ArticlesController extends Controller
      */
     public function store(Request $request, Article $article)
     {
-        dd($request->all());
+        //dd($request->all());
         $rules = $article->validateRules();
         $request->validate($rules);
         $data = $request->except('image');
