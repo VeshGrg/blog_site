@@ -18,9 +18,9 @@ use App\Http\Controllers\FrontendController;
 |
 */
 
-Route::get('/', function () {
-    return view('front.index');
-})->name('landing');
+//Route::get('/', function () {
+//    return view('front.index');
+//})->name('landing');
 
 Auth::routes();
 
@@ -42,9 +42,9 @@ Route::group(['namespace' => 'App\Http\Controllers'], function(){
         Route::get('/articles', [ArticlesController::class, 'index'])->name('articles');
         Route::get('/articles/create', [ArticlesController::class, 'create'])->name('new-article');
         Route::post('/submit-article', [ArticlesController::class, 'store'])->name('submit');
+        Route::patch('/selected-article/{article}', [ArticlesController::class, 'update'])->name('update');
         Route::delete('/articles/{article}/delete', [ArticlesController::class, 'destroy'])->name('delete-article');
         Route::get('/articles/{article}/edit', [ArticlesController::class, 'edit'])->name('edit-article');
-        Route::patch('/articles/{article}', [ArticlesController::class, 'update'])->name('update');
 
         Route::resource('user', "UserController");
 

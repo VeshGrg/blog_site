@@ -14,6 +14,7 @@
                     <img src="{{ asset('images/22.jpg') }}" alt="blog-image" style="width: 100%; height:350px">
                 </div>
             </div>
+
         </div>
     </div>
     <!--slider ends-->
@@ -62,7 +63,7 @@
             <div class="row">
                 @if($articles)
                     @foreach($articles as $all_articles)
-                        <div class="p2 offset-3 col-md-8 col-sm-12">
+                        <div class="p2 offset-3 col-md-12 col-sm-12">
                             <div class="row">
                                 <div class="process-one col-md-8 col-sm-8">
                                     <h4><img src="{{ asset('upload/article/'.$all_articles->image) }}" alt="" style="width: 45px"> {{ $all_articles->name }}</h4>

@@ -16,18 +16,22 @@ class FrontendController extends Controller
 {
     protected $user = null;
     protected $review = null;
+    //protected $article = null;
 
     public function __construct(User $user, PostReview $review)
     {
         $this->user = $user;
         $this->review = $review;
+        //$this->article = Article::factory()->count(20)->create();
     }
 
     public function home(Article $article)
     {
-        $article = $article->orderBy('id', 'DESC')->limit(8)->get();
+        Article::count() <= 21 ? Article::factory()->count(20)->create(): null;
+        $article = Article::orderBy('id', 'DESC')->limit(8)->get();
 
-        $all_articles = \App\Models\Article::inRandomOrder()->limit(8)->get();
+        $all_articles = \App\Models\Article::inRandomOrder()->limit(5)->get();
+
         return view('front.index')
             ->with('article_detail', $article)
             ->with('articles', $all_articles);
@@ -75,7 +79,7 @@ class FrontendController extends Controller
     public function updateReview(Request $request, $id)
     {
         // Update the post...
-        $this->validateId($id);
+        $this->review->findOrFail($id);
         $request->validate($this->review->validateReview());
         $data = $request->all();
         $this->review->fill($data);
@@ -88,13 +92,13 @@ class FrontendController extends Controller
         return redirect()->route('article-detail');
     }
 
-    public function validateId($id)
-    {
-        $this->review = $this->review->find($id);
-
-        if(!$this->review){
-            \request()->session()->flash('error', 'Sorry, no id found.');
-            return redirect()->back();
-        }
-    }
+//    public function validateId($id)
+//    {
+//        $this->review = $this->review->find($id);
+//
+//        if(!$this->review){
+//            \request()->session()->flash('error', 'Sorry, no id found.');
+//            return redirect()->back();
+//        }
+//    }
 }

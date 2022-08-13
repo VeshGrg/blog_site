@@ -11,7 +11,7 @@
 <!-- ChartJS -->
 <script src="{{ asset('plugins/chart.js/Chart.min.js') }}"></script>
 <!-- Sparkline -->
-<script src="{{ asset('plugins/sparklines/sparkline.js') }}"></script>
+{{--<script src="{{ asset('plugins/sparklines/sparkline.js') }}"></script>--}}
 <!-- JQVMap -->
 {{--<script src="{{ asset('plugins/jqvmap/jquery.vmap.min.js') }}"></script>--}}
 {{--<script src="{{ asset('plugins/jqvmap/maps/jquery.vmap.usa.js') }}"></script>--}}
@@ -29,7 +29,7 @@
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+{{--<script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>--}}
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('dist/js/demo.js') }}"></script>
 <script src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>

@@ -30,6 +30,7 @@ class ArticlesController extends Controller
      */
     public function create()
     {
+        //dd('hi');
         return view('admin.article-create');
     }
 

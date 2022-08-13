@@ -1,5 +1,5 @@
 <div class="copy">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="copy-first col-md-6 col-sm-6">
                 <p>Copyright {{ date('Y') }} Hamro Blog <br>
